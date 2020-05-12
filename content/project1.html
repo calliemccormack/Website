@@ -1,0 +1,1611 @@
+---
+title: "Project1"
+author: "Callie McCormack"
+date: "2/27/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<pre class="r"><code>#Datasets
+setwd(&quot;C:/Users/calla/Downloads&quot;)
+TeenPregnancy &lt;- read.csv(&quot;TeenPregnancy.csv&quot;)
+States &lt;- read.csv(&quot;States.csv&quot;)
+library(tidyverse)
+library(kableExtra)
+library(factoextra)</code></pre>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p><em>I joined two data sets, TeenPregnancy from the Stat2Data package and States from the carData package. TeenPregnancy includes teen pregnancy rates per 1000 teenage girls, role in the civil war, and church attendance in the previous week by state. Stat2Data includes the amount of money spent on education (in 1000’s per student), average teacher’s salary, percent of graduating high-school student who took the SAT, average score of seniors SAT score in mathematics and verbal, and population by state. It also includes the region the state is found it according to the U.S. census. I was interested in seeing how teen pregnancy rates relate to the amount of emphasis was placed on education in the state. Since high school I’ve been a supporter of comprehensive sex education as a way to prevent teen pregnancies. I expect teen pregnancy rates to decrease with amount of money spent on education.</em></p>
+<pre class="r"><code>States&lt;-States %&gt;% mutate(State=recode(State, &quot;CN&quot;=&quot;CT&quot;))
+data &lt;- inner_join(States, TeenPregnancy) %&gt;% select(-9)
+glimpse(data)</code></pre>
+<pre><code>## Rows: 50
+## Columns: 11
+## $ State    &lt;chr&gt; &quot;AL&quot;, &quot;AK&quot;, &quot;AZ&quot;, &quot;AR&quot;, &quot;CA&quot;, &quot;CO&quot;, &quot;CT&quot;, &quot;DE&quot;, &quot;FL&quot;, &quot;GA&quot;...
+## $ region   &lt;fct&gt; ESC, PAC, MTN, WSC, PAC, MTN, NE, SA, SA, SA, PAC, MTN, EN...
+## $ pop      &lt;int&gt; 4041, 550, 3665, 2351, 29760, 3294, 3287, 666, 12938, 6478...
+## $ SATV     &lt;int&gt; 470, 438, 445, 470, 419, 456, 430, 433, 418, 401, 404, 466...
+## $ SATM     &lt;int&gt; 514, 476, 497, 511, 484, 513, 471, 470, 466, 443, 481, 502...
+## $ percent  &lt;int&gt; 8, 42, 25, 6, 45, 28, 74, 58, 44, 57, 52, 17, 16, 54, 5, 1...
+## $ dollars  &lt;dbl&gt; 3.648, 7.887, 4.231, 3.334, 4.826, 4.809, 7.914, 6.016, 5....
+## $ pay      &lt;int&gt; 27, 43, 30, 23, 39, 31, 43, 35, 30, 29, 32, 25, 34, 32, 28...
+## $ CivilWar &lt;fct&gt; C, O, O, C, U, O, U, U, C, C, O, O, U, U, U, U, B, C, U, U...
+## $ Church   &lt;int&gt; 46, 26, 33, 45, 28, 25, 25, 35, 32, 39, 25, 34, 32, 35, 32...
+## $ Teen     &lt;int&gt; 62, 64, 60, 73, 59, 50, 44, 67, 60, 64, 65, 47, 57, 53, 44...</code></pre>
+<p><em>I did inner join so any cases found in one dataset that didn’t appear in the other would be dropped. This resulted in Washington D.C. being dropped from the States dataset since TeenPregnancy didn’t include that as a state. I also had to re code a state abbreviation since the States dataset used a different abbreviation for Connecticut than the TeenPregnancy dataset. I dropped a column that was just the row number in one of the data sets.</em></p>
+<pre class="r"><code>#Wrangling
+
+data &lt;- data %&gt;% mutate(SAT= (SATV+SATM)) %&gt;% select(c(-&quot;SATV&quot;, -&quot;SATM&quot;))
+
+data %&gt;% group_by(CivilWar)%&gt;%summarize_if(is.numeric, c(mean=mean,
+sd=sd,median=median)) %&gt;% pivot_longer(cols=-CivilWar) %&gt;% 
+separate(name, into=c(&quot;variable&quot;, &quot;stat&quot;)) %&gt;% 
+pivot_wider(names_from = &quot;variable&quot;, values_from=&quot;value&quot;)%&gt;% kable %&gt;% 
+kable_styling(bootstrap_options = c(&quot;striped&quot;), full_width = F,
+font_size = 10)</code></pre>
+<table class="table table-striped" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CivilWar
+</th>
+<th style="text-align:left;">
+stat
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+percent
+</th>
+<th style="text-align:right;">
+dollars
+</th>
+<th style="text-align:right;">
+pay
+</th>
+<th style="text-align:right;">
+Church
+</th>
+<th style="text-align:right;">
+Teen
+</th>
+<th style="text-align:right;">
+SAT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+mean
+</td>
+<td style="text-align:right;">
+3982.667
+</td>
+<td style="text-align:right;">
+10.333333
+</td>
+<td style="text-align:right;">
+4.1823333
+</td>
+<td style="text-align:right;">
+27.000000
+</td>
+<td style="text-align:right;">
+38.333333
+</td>
+<td style="text-align:right;">
+61.666667
+</td>
+<td style="text-align:right;">
+996.666667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+sd
+</td>
+<td style="text-align:right;">
+1018.658
+</td>
+<td style="text-align:right;">
+1.527525
+</td>
+<td style="text-align:right;">
+0.3815447
+</td>
+<td style="text-align:right;">
+2.645751
+</td>
+<td style="text-align:right;">
+3.055051
+</td>
+<td style="text-align:right;">
+7.505554
+</td>
+<td style="text-align:right;">
+3.785939
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+median
+</td>
+<td style="text-align:right;">
+3685.000
+</td>
+<td style="text-align:right;">
+10.000000
+</td>
+<td style="text-align:right;">
+4.3900000
+</td>
+<td style="text-align:right;">
+28.000000
+</td>
+<td style="text-align:right;">
+39.000000
+</td>
+<td style="text-align:right;">
+62.000000
+</td>
+<td style="text-align:right;">
+995.000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+mean
+</td>
+<td style="text-align:right;">
+6433.455
+</td>
+<td style="text-align:right;">
+31.727273
+</td>
+<td style="text-align:right;">
+4.2512727
+</td>
+<td style="text-align:right;">
+27.636364
+</td>
+<td style="text-align:right;">
+41.181818
+</td>
+<td style="text-align:right;">
+64.636364
+</td>
+<td style="text-align:right;">
+921.272727
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+sd
+</td>
+<td style="text-align:right;">
+4550.652
+</td>
+<td style="text-align:right;">
+23.499323
+</td>
+<td style="text-align:right;">
+0.7173780
+</td>
+<td style="text-align:right;">
+2.579641
+</td>
+<td style="text-align:right;">
+4.792039
+</td>
+<td style="text-align:right;">
+7.953273
+</td>
+<td style="text-align:right;">
+70.780069
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+median
+</td>
+<td style="text-align:right;">
+4877.000
+</td>
+<td style="text-align:right;">
+42.000000
+</td>
+<td style="text-align:right;">
+4.2380000
+</td>
+<td style="text-align:right;">
+28.000000
+</td>
+<td style="text-align:right;">
+42.000000
+</td>
+<td style="text-align:right;">
+64.000000
+</td>
+<td style="text-align:right;">
+895.000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+mean
+</td>
+<td style="text-align:right;">
+1659.333
+</td>
+<td style="text-align:right;">
+21.200000
+</td>
+<td style="text-align:right;">
+4.6309333
+</td>
+<td style="text-align:right;">
+28.600000
+</td>
+<td style="text-align:right;">
+31.200000
+</td>
+<td style="text-align:right;">
+55.066667
+</td>
+<td style="text-align:right;">
+974.466667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+sd
+</td>
+<td style="text-align:right;">
+1291.862
+</td>
+<td style="text-align:right;">
+14.785128
+</td>
+<td style="text-align:right;">
+1.1499345
+</td>
+<td style="text-align:right;">
+5.248129
+</td>
+<td style="text-align:right;">
+6.815948
+</td>
+<td style="text-align:right;">
+11.578716
+</td>
+<td style="text-align:right;">
+56.022785
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+median
+</td>
+<td style="text-align:right;">
+1202.000
+</td>
+<td style="text-align:right;">
+17.000000
+</td>
+<td style="text-align:right;">
+4.5640000
+</td>
+<td style="text-align:right;">
+26.000000
+</td>
+<td style="text-align:right;">
+31.000000
+</td>
+<td style="text-align:right;">
+53.000000
+</td>
+<td style="text-align:right;">
+969.000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+mean
+</td>
+<td style="text-align:right;">
+6690.286
+</td>
+<td style="text-align:right;">
+45.476191
+</td>
+<td style="text-align:right;">
+6.0459524
+</td>
+<td style="text-align:right;">
+34.523809
+</td>
+<td style="text-align:right;">
+28.333333
+</td>
+<td style="text-align:right;">
+48.238095
+</td>
+<td style="text-align:right;">
+934.857143
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+sd
+</td>
+<td style="text-align:right;">
+6982.452
+</td>
+<td style="text-align:right;">
+24.776237
+</td>
+<td style="text-align:right;">
+1.2003763
+</td>
+<td style="text-align:right;">
+4.238149
+</td>
+<td style="text-align:right;">
+5.170429
+</td>
+<td style="text-align:right;">
+9.828045
+</td>
+<td style="text-align:right;">
+62.162920
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+median
+</td>
+<td style="text-align:right;">
+4781.000
+</td>
+<td style="text-align:right;">
+58.000000
+</td>
+<td style="text-align:right;">
+5.7400000
+</td>
+<td style="text-align:right;">
+34.000000
+</td>
+<td style="text-align:right;">
+30.000000
+</td>
+<td style="text-align:right;">
+49.000000
+</td>
+<td style="text-align:right;">
+903.000000
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data %&gt;% group_by(CivilWar, region) %&gt;% summarize_if(is.numeric, mean) %&gt;% 
+arrange(region) %&gt;% kable %&gt;% kable_styling(bootstrap_options = &quot;striped&quot;, 
+full_width = F, font_size = 10) </code></pre>
+<table class="table table-striped" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CivilWar
+</th>
+<th style="text-align:left;">
+region
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+percent
+</th>
+<th style="text-align:right;">
+dollars
+</th>
+<th style="text-align:right;">
+pay
+</th>
+<th style="text-align:right;">
+Church
+</th>
+<th style="text-align:right;">
+Teen
+</th>
+<th style="text-align:right;">
+SAT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+ENC
+</td>
+<td style="text-align:right;">
+8401.800
+</td>
+<td style="text-align:right;">
+23.000000
+</td>
+<td style="text-align:right;">
+5.391000
+</td>
+<td style="text-align:right;">
+33.80000
+</td>
+<td style="text-align:right;">
+32.00000
+</td>
+<td style="text-align:right;">
+51.00000
+</td>
+<td style="text-align:right;">
+959.4000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+ESC
+</td>
+<td style="text-align:right;">
+3685.000
+</td>
+<td style="text-align:right;">
+10.000000
+</td>
+<td style="text-align:right;">
+4.390000
+</td>
+<td style="text-align:right;">
+29.00000
+</td>
+<td style="text-align:right;">
+41.00000
+</td>
+<td style="text-align:right;">
+62.00000
+</td>
+<td style="text-align:right;">
+994.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+ESC
+</td>
+<td style="text-align:right;">
+3830.333
+</td>
+<td style="text-align:right;">
+8.000000
+</td>
+<td style="text-align:right;">
+3.559000
+</td>
+<td style="text-align:right;">
+26.33333
+</td>
+<td style="text-align:right;">
+45.00000
+</td>
+<td style="text-align:right;">
+66.66667
+</td>
+<td style="text-align:right;">
+996.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+MA
+</td>
+<td style="text-align:right;">
+12534.000
+</td>
+<td style="text-align:right;">
+67.666667
+</td>
+<td style="text-align:right;">
+8.064333
+</td>
+<td style="text-align:right;">
+38.66667
+</td>
+<td style="text-align:right;">
+29.66667
+</td>
+<td style="text-align:right;">
+54.33333
+</td>
+<td style="text-align:right;">
+885.3333
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+MTN
+</td>
+<td style="text-align:right;">
+1707.375
+</td>
+<td style="text-align:right;">
+18.000000
+</td>
+<td style="text-align:right;">
+4.335250
+</td>
+<td style="text-align:right;">
+28.00000
+</td>
+<td style="text-align:right;">
+32.62500
+</td>
+<td style="text-align:right;">
+56.50000
+</td>
+<td style="text-align:right;">
+975.2500
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+NE
+</td>
+<td style="text-align:right;">
+2201.000
+</td>
+<td style="text-align:right;">
+66.166667
+</td>
+<td style="text-align:right;">
+6.398667
+</td>
+<td style="text-align:right;">
+34.33333
+</td>
+<td style="text-align:right;">
+22.00000
+</td>
+<td style="text-align:right;">
+38.66667
+</td>
+<td style="text-align:right;">
+899.1667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+PAC
+</td>
+<td style="text-align:right;">
+2175.000
+</td>
+<td style="text-align:right;">
+46.000000
+</td>
+<td style="text-align:right;">
+5.980000
+</td>
+<td style="text-align:right;">
+36.00000
+</td>
+<td style="text-align:right;">
+25.00000
+</td>
+<td style="text-align:right;">
+59.33333
+</td>
+<td style="text-align:right;">
+907.3333
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+PAC
+</td>
+<td style="text-align:right;">
+16301.000
+</td>
+<td style="text-align:right;">
+47.000000
+</td>
+<td style="text-align:right;">
+5.058500
+</td>
+<td style="text-align:right;">
+35.50000
+</td>
+<td style="text-align:right;">
+26.00000
+</td>
+<td style="text-align:right;">
+53.00000
+</td>
+<td style="text-align:right;">
+913.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+SA
+</td>
+<td style="text-align:right;">
+7143.800
+</td>
+<td style="text-align:right;">
+53.600000
+</td>
+<td style="text-align:right;">
+4.900600
+</td>
+<td style="text-align:right;">
+29.60000
+</td>
+<td style="text-align:right;">
+37.60000
+</td>
+<td style="text-align:right;">
+59.20000
+</td>
+<td style="text-align:right;">
+859.6000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+SA
+</td>
+<td style="text-align:right;">
+1793.000
+</td>
+<td style="text-align:right;">
+15.000000
+</td>
+<td style="text-align:right;">
+5.046000
+</td>
+<td style="text-align:right;">
+26.00000
+</td>
+<td style="text-align:right;">
+34.00000
+</td>
+<td style="text-align:right;">
+64.00000
+</td>
+<td style="text-align:right;">
+933.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+SA
+</td>
+<td style="text-align:right;">
+2723.500
+</td>
+<td style="text-align:right;">
+58.500000
+</td>
+<td style="text-align:right;">
+6.100000
+</td>
+<td style="text-align:right;">
+36.50000
+</td>
+<td style="text-align:right;">
+33.00000
+</td>
+<td style="text-align:right;">
+62.00000
+</td>
+<td style="text-align:right;">
+905.5000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+WNC
+</td>
+<td style="text-align:right;">
+5117.000
+</td>
+<td style="text-align:right;">
+12.000000
+</td>
+<td style="text-align:right;">
+4.415000
+</td>
+<td style="text-align:right;">
+28.00000
+</td>
+<td style="text-align:right;">
+35.00000
+</td>
+<td style="text-align:right;">
+54.00000
+</td>
+<td style="text-align:right;">
+995.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+WNC
+</td>
+<td style="text-align:right;">
+971.000
+</td>
+<td style="text-align:right;">
+7.000000
+</td>
+<td style="text-align:right;">
+3.932000
+</td>
+<td style="text-align:right;">
+23.66667
+</td>
+<td style="text-align:right;">
+32.66667
+</td>
+<td style="text-align:right;">
+44.00000
+</td>
+<td style="text-align:right;">
+1053.3333
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+WNC
+</td>
+<td style="text-align:right;">
+3210.000
+</td>
+<td style="text-align:right;">
+9.666667
+</td>
+<td style="text-align:right;">
+5.036000
+</td>
+<td style="text-align:right;">
+30.00000
+</td>
+<td style="text-align:right;">
+32.00000
+</td>
+<td style="text-align:right;">
+44.33333
+</td>
+<td style="text-align:right;">
+1049.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+WSC
+</td>
+<td style="text-align:right;">
+3146.000
+</td>
+<td style="text-align:right;">
+9.000000
+</td>
+<td style="text-align:right;">
+3.742000
+</td>
+<td style="text-align:right;">
+24.00000
+</td>
+<td style="text-align:right;">
+39.00000
+</td>
+<td style="text-align:right;">
+69.00000
+</td>
+<td style="text-align:right;">
+1001.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+WSC
+</td>
+<td style="text-align:right;">
+7852.667
+</td>
+<td style="text-align:right;">
+19.000000
+</td>
+<td style="text-align:right;">
+3.861333
+</td>
+<td style="text-align:right;">
+25.66667
+</td>
+<td style="text-align:right;">
+43.33333
+</td>
+<td style="text-align:right;">
+71.66667
+</td>
+<td style="text-align:right;">
+949.3333
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data %&gt;% count(CivilWar) %&gt;% mutate(prop=(n/sum(n))) %&gt;% kable %&gt;%
+kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CivilWar
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+prop
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+0.22
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0.30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+0.42
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data %&gt;% count(region) %&gt;% mutate(prop=(n/sum(n))) %&gt;% kable %&gt;%
+kable_styling(bootstrap_options = &quot;striped&quot;, full_width=F)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+region
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+prop
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ENC
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ESC
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MA
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MTN
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NE
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PAC
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SA
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+WNC
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0.14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+WSC
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data %&gt;% select_if(is.numeric) %&gt;% cor %&gt;% kable %&gt;% 
+kable_styling(bootstrap_options = c(&quot;striped&quot;), full_width = F,
+font_size = 10)</code></pre>
+<table class="table table-striped" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+percent
+</th>
+<th style="text-align:right;">
+dollars
+</th>
+<th style="text-align:right;">
+pay
+</th>
+<th style="text-align:right;">
+Church
+</th>
+<th style="text-align:right;">
+Teen
+</th>
+<th style="text-align:right;">
+SAT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+pop
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.2393264
+</td>
+<td style="text-align:right;">
+0.1897784
+</td>
+<td style="text-align:right;">
+0.4041393
+</td>
+<td style="text-align:right;">
+0.0073115
+</td>
+<td style="text-align:right;">
+0.1627323
+</td>
+<td style="text-align:right;">
+-0.3163477
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+percent
+</td>
+<td style="text-align:right;">
+0.2393264
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.6963723
+</td>
+<td style="text-align:right;">
+0.6475399
+</td>
+<td style="text-align:right;">
+-0.5066976
+</td>
+<td style="text-align:right;">
+-0.2039493
+</td>
+<td style="text-align:right;">
+-0.8627428
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dollars
+</td>
+<td style="text-align:right;">
+0.1897784
+</td>
+<td style="text-align:right;">
+0.6963723
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.8411843
+</td>
+<td style="text-align:right;">
+-0.5886845
+</td>
+<td style="text-align:right;">
+-0.2362071
+</td>
+<td style="text-align:right;">
+-0.4773697
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pay
+</td>
+<td style="text-align:right;">
+0.4041393
+</td>
+<td style="text-align:right;">
+0.6475399
+</td>
+<td style="text-align:right;">
+0.8411843
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+-0.5071659
+</td>
+<td style="text-align:right;">
+-0.1588964
+</td>
+<td style="text-align:right;">
+-0.5007814
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Church
+</td>
+<td style="text-align:right;">
+0.0073115
+</td>
+<td style="text-align:right;">
+-0.5066976
+</td>
+<td style="text-align:right;">
+-0.5886845
+</td>
+<td style="text-align:right;">
+-0.5071659
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.5091749
+</td>
+<td style="text-align:right;">
+0.2557600
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Teen
+</td>
+<td style="text-align:right;">
+0.1627323
+</td>
+<td style="text-align:right;">
+-0.2039493
+</td>
+<td style="text-align:right;">
+-0.2362071
+</td>
+<td style="text-align:right;">
+-0.1588964
+</td>
+<td style="text-align:right;">
+0.5091749
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+-0.1366977
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SAT
+</td>
+<td style="text-align:right;">
+-0.3163477
+</td>
+<td style="text-align:right;">
+-0.8627428
+</td>
+<td style="text-align:right;">
+-0.4773697
+</td>
+<td style="text-align:right;">
+-0.5007814
+</td>
+<td style="text-align:right;">
+0.2557600
+</td>
+<td style="text-align:right;">
+-0.1366977
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data %&gt;% filter(CivilWar!=&quot;O&quot;) %&gt;% select_if(is.numeric) %&gt;% cor %&gt;% 
+kable %&gt;% kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, font_size=10)</code></pre>
+<table class="table table-striped" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+percent
+</th>
+<th style="text-align:right;">
+dollars
+</th>
+<th style="text-align:right;">
+pay
+</th>
+<th style="text-align:right;">
+Church
+</th>
+<th style="text-align:right;">
+Teen
+</th>
+<th style="text-align:right;">
+SAT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+pop
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.1153319
+</td>
+<td style="text-align:right;">
+0.1253531
+</td>
+<td style="text-align:right;">
+0.3884051
+</td>
+<td style="text-align:right;">
+-0.0463430
+</td>
+<td style="text-align:right;">
+0.2284936
+</td>
+<td style="text-align:right;">
+-0.2459647
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+percent
+</td>
+<td style="text-align:right;">
+0.1153319
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.6935358
+</td>
+<td style="text-align:right;">
+0.5873297
+</td>
+<td style="text-align:right;">
+-0.5784397
+</td>
+<td style="text-align:right;">
+-0.3474333
+</td>
+<td style="text-align:right;">
+-0.8606458
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dollars
+</td>
+<td style="text-align:right;">
+0.1253531
+</td>
+<td style="text-align:right;">
+0.6935358
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.8322505
+</td>
+<td style="text-align:right;">
+-0.6566120
+</td>
+<td style="text-align:right;">
+-0.4811055
+</td>
+<td style="text-align:right;">
+-0.3994086
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pay
+</td>
+<td style="text-align:right;">
+0.3884051
+</td>
+<td style="text-align:right;">
+0.5873297
+</td>
+<td style="text-align:right;">
+0.8322505
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+-0.5897015
+</td>
+<td style="text-align:right;">
+-0.3947914
+</td>
+<td style="text-align:right;">
+-0.3533475
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Church
+</td>
+<td style="text-align:right;">
+-0.0463430
+</td>
+<td style="text-align:right;">
+-0.5784397
+</td>
+<td style="text-align:right;">
+-0.6566120
+</td>
+<td style="text-align:right;">
+-0.5897015
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.8076294
+</td>
+<td style="text-align:right;">
+0.2372059
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Teen
+</td>
+<td style="text-align:right;">
+0.2284936
+</td>
+<td style="text-align:right;">
+-0.3474333
+</td>
+<td style="text-align:right;">
+-0.4811055
+</td>
+<td style="text-align:right;">
+-0.3947914
+</td>
+<td style="text-align:right;">
+0.8076294
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+-0.0065030
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SAT
+</td>
+<td style="text-align:right;">
+-0.2459647
+</td>
+<td style="text-align:right;">
+-0.8606458
+</td>
+<td style="text-align:right;">
+-0.3994086
+</td>
+<td style="text-align:right;">
+-0.3533475
+</td>
+<td style="text-align:right;">
+0.2372059
+</td>
+<td style="text-align:right;">
+-0.0065030
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+</tr>
+</tbody>
+</table>
+<p><em>I computed a new variable called SAT which is just the SAT mathematics and SAT verbal variables computed together since I felt like having the sections separate didn’t add anything to the data. I then took the data and computed the mean, median, and standard deviation of each numeric variable grouped by role in the Civil War. I also calculated the mean grouped by role in the civil war and region. I calculated the proportion of the categorical variables, and a correlation matrix between all numerical variables. I wanted to see if the correlation changes significantly if I removed all rows that were “other” for the civil war since that encompasses all states added after the civil war, which I think could be masking some associations between the variables.</em>
+<em>Surprisingly, there did not seem to be a strong correlation with teen pregnancy except for church attendance, which had a positive correlation with each other. When I removed the “other” rows, the correlation between church attendance and teen pregnancy increased drastically, and there was a higher correlation between teen pregnancy and the amount of money spent per student on education. Union states tended to have lower church attendance, lower teen pregnancy, spent more money on education, and had higher percent take the SAT.</em></p>
+<pre class="r"><code>#Visualizing
+tidycor &lt;- data %&gt;% select_if(is.numeric) %&gt;% cor %&gt;% 
+as.data.frame %&gt;% rownames_to_column %&gt;% 
+pivot_longer(-1, names_to = &quot;names&quot;, values_to = &quot;correlation&quot;)
+
+head(tidycor)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   rowname names   correlation
+##   &lt;chr&gt;   &lt;chr&gt;         &lt;dbl&gt;
+## 1 pop     pop         1      
+## 2 pop     percent     0.239  
+## 3 pop     dollars     0.190  
+## 4 pop     pay         0.404  
+## 5 pop     Church      0.00731
+## 6 pop     Teen        0.163</code></pre>
+<pre class="r"><code>tidycor %&gt;% ggplot(aes(rowname, names, fill= correlation)) +
+geom_tile() + scale_fill_gradient2(low=&quot;red&quot;, 
+mid=&quot;white&quot;, high=&quot;blue&quot;) + geom_text(aes(label=round(correlation,2)), size=3) + 
+coord_fixed()+ theme(axis.text.x = element_text(angle = 60, hjust=1)) +
+labs(title=&quot;Correlation heat map&quot;, x= &quot;&quot;, y= &quot;&quot;)</code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>data %&gt;% group_by(region) %&gt;% ggplot(aes(x=region, y=dollars, fill=CivilWar))+
+geom_bar(stat=&quot;summary&quot;, position=&quot;dodge&quot;) + theme_minimal() + 
+labs(title=&quot;Amount spent on education by region and Civil War role&quot;, y= 
+&quot;Dollars spent per student (1000&#39;s) &quot;, x= &quot;Region&quot;) + 
+geom_errorbar(stat=&quot;summary&quot;, position = &quot;dodge&quot;)</code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><em>Mid-Atlantic region spend significantly more money per student than other region. Union states tended to spend the most per student while confederate spent the least on education. Confederate states and border states were found in the smallest number of regions, and confederate states had the smallest amount of variation. </em></p>
+<pre class="r"><code>data %&gt;% ggplot(aes(Teen, Church, color=CivilWar, size=dollars)) + geom_point() +
+scale_x_continuous(breaks = seq(0,80, 5)) + 
+scale_y_continuous(breaks = seq(10,60,5)) + theme_bw() + labs(title=
+&quot;Church attendance by teen pregnancy rate&quot;,
+x =&quot;Pregnancies per 1000 teenage girls&quot;, y= &quot;Church attendance in previous week&quot;) </code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><em>There’s a positive correlation between teen pregnancies and church attendance. Union states attend church less, have lower pregnancies, and spend more money on average on education compared to confederate states. States that were added after the civil war tended to be in the middle of between all variables while border states are most similar to confederate states.</em></p>
+<pre class="r"><code>#Dimensionatlity Reduction
+data_nums &lt;- data %&gt;% select_if(is.numeric) %&gt;% scale
+rownames(data_nums) &lt;- data$State
+data_PCA &lt;- princomp(data_nums)
+summary(data_PCA, loadings = T)</code></pre>
+<pre><code>## Importance of components:
+##                           Comp.1    Comp.2    Comp.3     Comp.4     Comp.5
+## Standard deviation     1.8667855 1.2214185 0.8912335 0.74461238 0.59366761
+## Proportion of Variance 0.5080012 0.2174728 0.1157867 0.08082327 0.05137627
+## Cumulative Proportion  0.5080012 0.7254739 0.8412607 0.92208395 0.97346023
+##                            Comp.6      Comp.7
+## Standard deviation     0.35822820 0.231808963
+## Proportion of Variance 0.01870662 0.007833148
+## Cumulative Proportion  0.99216685 1.000000000
+## 
+## Loadings:
+##         Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 Comp.6 Comp.7
+## pop      0.190  0.478  0.723  0.393  0.141  0.195       
+## percent  0.477        -0.348  0.279 -0.128  0.144  0.728
+## dollars  0.466               -0.486 -0.234  0.647 -0.244
+## pay      0.462         0.288 -0.394 -0.217 -0.701       
+## Church  -0.362  0.436               -0.822              
+## Teen    -0.149  0.659 -0.209 -0.526  0.431         0.189
+## SAT     -0.390 -0.360  0.472 -0.315         0.163  0.607</code></pre>
+<pre class="r"><code>fviz_pca_biplot(data_PCA, habillage=data$CivilWar, labelsize=3, pointsize=1)</code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><em>I used Kaiser’s rule to decide how many PC’s to use, which resulted in only two PC’s which encompasses around 72.5% of the variance in the dataset. Component one is a positive relationship between money spent on education, population, and percentage who takes the SAT, and a negative relationship with SAT scores, Teen pregnancy, and church attendance.Principal component two has a positive correlation between population, church attendance, teen pregnancy, and a negative correlation with SAT scores. New York and California scored high on both PC’s and Texas scored the highest on PC2. It’s a little strange that New York and California scored high on PC2 since they are known as fairly liberal with high scoring students, but it makes since that they score high on PC1. Texas being highest makes a lot of sense since it’s in the bible belt and abstinence only education is the law here.</em></p>
+</div>

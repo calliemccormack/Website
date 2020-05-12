@@ -1,0 +1,9 @@
+{
+    "path" : "~/Comp Bio/Website/content",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Callie McCormack" />
+    <meta name="description" content="Describe your website">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Project 2</title>
+    <meta name="generator" content="Hugo 0.70.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/project2/">Project 2</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 1, 0001
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<pre class="r"><code>Suicide &lt;- read.csv(&quot;who_suicide_statistics.csv&quot;)
+Suicide&lt;- Suicide %&gt;% drop_na()
+&#39;%!in%&#39; &lt;- function(x,y)!(&#39;%in%&#39;(x,y))
+Suicide$year &lt;- as.factor(Suicide$year)
+set.seed(1234)
+Suicidedata &lt;- Suicide%&gt;%mutate(y=ifelse(sex==&quot;female&quot;, 1, 0))</code></pre>
+<p>##Introduction</p>
+<p>I found the WHO suicide statistics on the Kaggle website. The dataset was made using the WHO mortality database online tool, and covers the year 1979-2016. 141 countries are covered in the dataset, with 6 groupings of age from 5-75 in ten year intervals. Sex is a factor with two levels of male and females which I used as the binary variable. Suicides_no is a numeric variable that list the number of suicides, while population lists the number of people in the country, with a one to one ratio. Since some countries didn’t measure suicide numbers, I omitted the rows that have NA’s. When the NA’s were omitted, there were 36,060 observations.</p>
+<pre class="r"><code>#Manova
+
+
+covmats &lt;- Suicide%&gt;% group_by(age) %&gt;% do(covs=cov(.[5:6]))
+for(i in 1:6){print(as.character(covmats$age[i])); print(covmats$covs[i])}</code></pre>
+<pre><code>## [1] &quot;15-24 years&quot;
+## [[1]]
+##              suicides_no   population
+## suicides_no     250871.9 1.120415e+09
+## population  1120415034.6 1.153350e+13
+## 
+## [1] &quot;25-34 years&quot;
+## [[1]]
+##              suicides_no   population
+## suicides_no     554531.7 1.549635e+09
+## population  1549635345.3 1.073301e+13
+## 
+## [1] &quot;35-54 years&quot;
+## [[1]]
+##             suicides_no   population
+## suicides_no     2430411 5.756611e+09
+## population   5756611047 3.137593e+13
+## 
+## [1] &quot;5-14 years&quot;
+## [[1]]
+##              suicides_no   population
+## suicides_no 8.216003e+02 6.547980e+07
+## population  6.547980e+07 1.145551e+13
+## 
+## [1] &quot;55-74 years&quot;
+## [[1]]
+##              suicides_no   population
+## suicides_no     903940.3 2.441789e+09
+## population  2441789157.9 1.283195e+13
+## 
+## [1] &quot;75+ years&quot;
+## [[1]]
+##             suicides_no   population
+## suicides_no    115684.4 2.839754e+08
+## population  283975366.5 1.472035e+12</code></pre>
+<pre class="r"><code>man &lt;- manova(cbind(suicides_no, population)~age, data=Suicide)
+summary(man)</code></pre>
+<pre><code>## Df Pillai approx F num Df den Df Pr(&gt;F)
+## age 5 0.060836 226.22 10 72108 &lt; 2.2e-16 ***
+## Residuals 36054
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(man)</code></pre>
+<pre><code>## Response suicides_no :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## age 5 8.1188e+08 162375464 228.9 &lt; 2.2e-16 ***
+## Residuals 36054 2.5576e+10 709377
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Response population :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## age 5 1.5938e+16 3.1875e+15 240.87 &lt; 2.2e-16 ***
+## Residuals 36054 4.7713e+17 1.3234e+13
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>pairwise.t.test(Suicide$suicides_no, Suicide$age, p.adj=&quot;none&quot;)</code></pre>
+<pre><code>##
+## Pairwise comparisons using t tests with pooled SD
+##
+## data: Suicide$suicides_no and Suicide$age
+##
+## 15-24 years 25-34 years 35-54 years 5-14 years 55-74
+years
+## 25-34 years 3.1e-05 - - - -
+## 35-54 years &lt; 2e-16 &lt; 2e-16 - - -
+## 5-14 years &lt; 2e-16 &lt; 2e-16 &lt; 2e-16 - -
+## 55-74 years &lt; 2e-16 1.2e-10 &lt; 2e-16 &lt; 2e-16 -
+## 75+ years 0.018 6.2e-11 &lt; 2e-16 5.6e-14 &lt; 2e-16
+##
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(Suicide$population,Suicide$age, p.adj=&quot;none&quot;)</code></pre>
+<pre><code>##
+## Pairwise comparisons using t tests with pooled SD
+##
+## data: Suicide$population and Suicide$age
+##
+## 15-24 years 25-34 years 35-54 years 5-14 years 55-74
+years
+## 25-34 years 0.31 - - - -
+## 35-54 years &lt;2e-16 &lt;2e-16 - - -
+## 5-14 years 0.73 0.50 &lt;2e-16 - -
+## 55-74 years 0.40 0.86 &lt;2e-16 0.61 -
+## 75+ years &lt;2e-16 &lt;2e-16 &lt;2e-16 &lt;2e-16 &lt;2e-16
+##
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>1 - (.95)^33</code></pre>
+<pre><code>## [1] 0.8159741</code></pre>
+<pre class="r"><code>.05/33</code></pre>
+<pre><code>## [1] 0.001515152</code></pre>
+<p>There are many assumptions for a MANOVA, but the assumption of multivariate normality is met since there are more than 25 observations per group. The assumption of homogeneity for co-variances is not met since the 5-14 age group co-variance matrix seems to vary from the other age groups.1 MANOVA test was run, 2 ANOVA’s were run, and 30 t tests were run (33 tests in total). The probability of a type one error is 81.6%, and the adjusted significance level is .0015. With the new significance level,5-14 year olds differ from every age group in suicide number,15-24 year olds differ from every age group except for 75+ ages, 25-34 year olds suicide numbers differ significantly from every other age group, the 35-54 year olds differ from every age group, 55-75 year olds differ from every age group, and 75+ age group differs from every group except 15-24 year olds. In population numbers, 75+ year olds differ from every age group, and 35-54 year olds differ from every age group. All other age groups do not differ from each other.</p>
+<pre class="r"><code>Suicide%&gt;%group_by(sex)%&gt;%
+  summarize(means=mean(suicides_no))%&gt;%
+  summarize(`mean_diff:`=diff(means))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `mean_diff:`
+##          &lt;dbl&gt;
+## 1         233.</code></pre>
+<pre class="r"><code>rand_dist &lt;- vector()
+
+for(i in 1:5000){
+  new &lt;- data.frame(Suicides=sample(Suicide$suicides_no), Sex=Suicide$sex)
+  rand_dist[i]&lt;-mean(new[new$Sex==&quot;female&quot;,]$Suicides)-
+                mean(new[new$Sex==&quot;male&quot;,]$Suicides)} 
+
+
+{hist(rand_dist,main=&quot;&quot;,ylab=&quot;&quot;); abline(v=233.493,col=&quot;red&quot;)}</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-3-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>mean(rand_dist&gt; 233.493 | rand_dist&lt; -233.493)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>The null hypothesis is that there is no mean difference in suicide numbers between sexes. The results of the randomization test show that we can reject the null hypothesis that there is no difference in suicide numbers between sexes. The calculated mean difference (233) is much higher than the null distribution so the test statistic isn’t visible on the histogram of the null distribution.</p>
+<pre class="r"><code>#Linear Regression Model
+
+Suicidedata$population_c &lt;- Suicide$population- mean(Suicide$population)
+Suicidedata$suicides_no_c &lt;- Suicide$suicides_no - mean(Suicide$suicides_no)
+
+
+fit &lt;- lm(suicides_no_c ~ population_c+sex+sex:population_c, data=Suicidedata)
+summary(fit)</code></pre>
+<pre><code>##
+## Call:
+## lm(formula = suicides_no_c ~ population_c + sex +
+sex:population_c,
+## data = Suicidedata)
+##
+## Residuals:
+## Min 1Q Median 3Q Max
+## -4548.5 -26.1 5.6 34.0 18091.9
+##
+## Coefficients:
+## Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) -1.193e+02 4.437e+00 -26.89 &lt;2e-16 ***
+## population_c 6.388e-05 1.181e-06 54.07 &lt;2e-16 ***
+## sexmale 2.450e+02 6.275e+00 39.05 &lt;2e-16 ***
+## population_c:sexmale 1.609e-04 1.698e-06 94.77 &lt;2e-16
+***
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Residual standard error: 595.7 on 36056 degrees of
+freedom
+## Multiple R-squared: 0.5151, Adjusted R-squared: 0.5151
+## F-statistic: 1.277e+04 on 3 and 36056 DF, p-value: &lt;
+2.2e-16</code></pre>
+<pre class="r"><code>Suicidedata %&gt;% ggplot() + geom_point(aes(x=population_c, y=suicides_no_c, color=sex),
+alpha=.2) +  geom_smooth(method = &quot;lm&quot;, se = FALSE, aes(x=population_c,
+y=suicides_no_c, color=sex))</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>resids &lt;- fit$residuals
+
+ks.test(resids, &quot;pnorm&quot;,mean=0, sd(resids))</code></pre>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  resids
+## D = 0.32633, p-value &lt; 2.2e-16
+## alternative hypothesis: two-sided</code></pre>
+<pre class="r"><code>bptest(fit)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  fit
+## BP = 3582, df = 3, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>coeftest(fit, vcov = vcovHC(fit))</code></pre>
+<pre><code>##
+## t test of coefficients:
+##
+## Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) -1.1930e+02 1.5785e+00 -75.578 &lt; 2.2e-16 ***
+## population_c 6.3882e-05 1.5063e-06 42.411 &lt; 2.2e-16 ***
+## sexmale 2.4504e+02 6.4994e+00 37.702 &lt; 2.2e-16 ***
+## population_c:sexmale 1.6090e-04 6.7643e-06 23.786 &lt;
+2.2e-16 ***
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<p>The predicted suicide number for females of an average population is -119.3. Controlling for sex, for every one unit increase in population, the number of suicides increases by 6.3883-5. Controlling for population, being male increases the number of suicides by 245. The slope for population on suicides number for males is 1.609e-4 greater. The linear regression does not pass the assumption of normality via the KS test and fails the assumption of homoskedacity using the BP test. Using robust standard errors, all coefficients are still significant. The variables tested explain 51.51% of the variation in suicide numbers. The standard error increases for every variable/interaction and decreased for the intercept. The probability increases for everything, but is still significant.</p>
+<pre class="r"><code>#Boostraped Standard Errors
+
+
+samp_distn&lt;-replicate(5000, {  
+            boot_dat &lt;- sample_frac(Suicidedata, replace=T) 
+            fit &lt;- lm(suicides_no_c~population_c+sex+sex:population_c,
+data=boot_dat)  
+            coef(fit) }) 
+
+samp_distn %&gt;% t %&gt;% as.data.frame %&gt;% summarize_all(sd)</code></pre>
+<pre><code>##   (Intercept) population_c  sexmale population_c:sexmale
+## 1    1.573948 1.510654e-06 6.485756         6.762389e-06</code></pre>
+<p>With Bootstrapped standard errors,the standard errors are in between the original standard errors and the robust standard errors. The probability is slightly higher than the original regression, but is still significant.</p>
+<pre class="r"><code>#Logistic Regression
+
+
+logisticfit &lt;- glm(y~population_c+suicides_no_c,data=Suicidedata, family=&quot;binomial&quot;)
+coeftest(logisticfit)</code></pre>
+<pre><code>##
+## z test of coefficients:
+##
+## Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -1.0709e-01 1.1979e-02 -8.9398 &lt; 2.2e-16 ***
+## population_c 2.0878e-07 6.4189e-09 32.5261 &lt; 2.2e-16 ***
+## suicides_no_c -2.1717e-03 6.1858e-05 -35.1074 &lt; 2.2e-16
+***
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>exp(coeftest(logisticfit))</code></pre>
+<pre><code>## 
+## z test of coefficients:
+## 
+##               Estimate Std. Error    z value Pr(&gt;|z|)
+## (Intercept)    0.89844    1.01205 1.0000e-04        1
+## population_c   1.00000    1.00000 1.3363e+14        1
+## suicides_no_c  0.99783    1.00006 0.0000e+00        1</code></pre>
+<pre class="r"><code>probs &lt;- predict(logisticfit, type = &quot;response&quot;)
+table(predict=as.numeric(probs&gt;.5), truth=Suicidedata$y) %&gt;% addmargins()</code></pre>
+<pre><code>##        truth
+## predict     0     1   Sum
+##     0    8490  2250 10740
+##     1    9540 15780 25320
+##     Sum 18030 18030 36060</code></pre>
+<pre class="r"><code>class_diag(probs, Suicidedata$y)</code></pre>
+<pre><code>##         acc     sens      spec       ppv       auc
+## 1 0.6730449 0.875208 0.4708819 0.6232227 0.7325971</code></pre>
+<pre class="r"><code>Suicidedata$logit &lt;-predict(logisticfit, type=&quot;link&quot;)
+
+ggplot(Suicidedata,aes(logit, color=sex, fill=sex))+geom_density(alpha=.3)+
+geom_vline(xintercept=0,lty=2)+xlim(-.1,.1) + geom_rug()</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-6-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>The odds of being female in a mean population with a mean number of suicides is .8944. Controlling for suicide number, for every one unit increase in population, the odds of the being female increases by a factor of 1. Controlling for population, for every one unit increase in suicide number the odds of being female decreases by a factor of .9978. The AUC is .733 which means it is a fair model, with the specificity being .47 and sensitivity .875.</p>
+<pre class="r"><code>ROCplot&lt;-ggplot(Suicidedata) + geom_roc(aes(d=y, m=probs), n.cuts=0)
+ROCplot</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>calc_auc(ROCplot)</code></pre>
+<pre><code>##   PANEL group       AUC
+## 1     1    -1 0.7326014</code></pre>
+<pre class="r"><code>k=10
+
+data1 &lt;- Suicidedata %&gt;% sample_frac()
+folds &lt;- ntile(1:nrow(data1), n=10)
+
+diags&lt;-NULL 
+
+for(i in 1:k){  
+     train &lt;- data1[folds!=i,]
+     test &lt;- data1[folds==i,] 
+     truth &lt;- test$y
+     fit &lt;- glm(y~ population+suicides_no, data=train, family=&quot;binomial&quot;) 
+     probs &lt;- predict(fit, newdata=test, type=&quot;response&quot;) 
+     diags&lt;-rbind(diags,class_diag(probs,truth)) 
+     } 
+summarize_all(diags, mean)</code></pre>
+<pre><code>##         acc      sens      spec       ppv      auc
+## 1 0.6719634 0.8741061 0.4701754 0.6226366 0.732691</code></pre>
+<p>The AUC from the ROC plot is slightly higher than the AUC from the class_diag function, but is still a fair model.The average AUC from the 10-fold CV is slightly lower than the one from the ROC plot and the AUC from the class_diag function.</p>
+<pre class="r"><code>#Lasso Regression
+
+y &lt;- as.matrix(Suicide$sex)
+x &lt;- model.matrix(sex~-1+., data=Suicide, na.action=na.omit)
+
+
+
+
+cv &lt;- cv.glmnet(x,y, family=&quot;binomial&quot;)
+
+lasso &lt;- glmnet(x,y, family = &quot;binomial&quot;, lambda = cv$lambda.1se)
+
+c&lt;-coef(lasso)
+
+inds&lt;-which(c!=0)
+variables&lt;-row.names(c)[inds]
+variables&lt;-variables[variables %!in% &#39;(Intercept)&#39;]
+
+
+variables&lt;-str_remove(variables, &quot;country&quot;)
+
+variables</code></pre>
+<pre><code>## [1] &quot;Australia&quot; &quot;Austria&quot;
+## [3] &quot;Azerbaijan&quot; &quot;Belarus&quot;
+## [5] &quot;Belgium&quot; &quot;Brazil&quot;
+## [7] &quot;Bulgaria&quot; &quot;Canada&quot;
+## [9] &quot;Colombia&quot; &quot;Croatia&quot;
+## [11] &quot;Cuba&quot; &quot;Czech Republic&quot;
+## [13] &quot;Ecuador&quot; &quot;Egypt&quot;
+## [15] &quot;Finland&quot; &quot;France&quot;
+## [17] &quot;Germany&quot; &quot;Greece&quot;
+## [19] &quot;Guatemala&quot; &quot;Hungary&quot;
+## [21] &quot;Iran (Islamic Rep of)&quot; &quot;Italy&quot;
+## [23] &quot;Japan&quot; &quot;Kazakhstan&quot;
+## [25] &quot;Latvia&quot; &quot;Lithuania&quot;
+## [27] &quot;Mexico&quot; &quot;Philippines&quot;
+## [29] &quot;Poland&quot; &quot;Republic of Korea&quot;
+## [31] &quot;Romania&quot; &quot;Russian Federation&quot;
+## [33] &quot;Serbia&quot; &quot;South Africa&quot;
+## [35] &quot;Spain&quot; &quot;Sri Lanka&quot;
+## [37] &quot;Sweden&quot; &quot;Switzerland&quot;
+## [39] &quot;Thailand&quot; &quot;Turkey&quot;
+## [41] &quot;Ukraine&quot; &quot;United Kingdom&quot;
+## [43] &quot;Venezuela (Bolivarian Republic of)&quot; &quot;age25-34
+years&quot;
+## [45] &quot;age35-54 years&quot; &quot;age5-14 years&quot;
+## [47] &quot;age55-74 years&quot; &quot;age75+ years&quot;
+## [49] &quot;suicides_no&quot; &quot;population&quot;</code></pre>
+<pre class="r"><code>Suicidewide&lt;-Suicide%&gt;% pivot_wider(names_from = country, values_from = country,
+values_fill = list(country=0),
+values_fn = list(country = ~+(as.logical(length(.))))) %&gt;% 
+select(one_of(variables), age, population, suicides_no,sex)
+
+k=10
+suicidedat &lt;- Suicidewide[sample(nrow(Suicidewide)),]
+folds&lt;-cut(seq(1:nrow(Suicidewide)),breaks=k,labels=F)
+
+diags &lt;- NULL
+
+for(i in 1:k){
+  train&lt;-suicidedat[folds!=i,]
+  test &lt;- suicidedat[folds==i,]
+  truth &lt;-test$sex
+  
+  fit &lt;- glm(sex~., data=train, family = &quot;binomial&quot;)
+  probs &lt;- predict(fit, newdata = test, type=&quot;response&quot;)
+  
+  diags &lt;- rbind(diags, class_diag(probs, truth))
+}
+
+diags %&gt;% summarize_all(mean)</code></pre>
+<pre><code>##         acc     sens      spec       ppv       auc
+## 1 0.6743541 0.602193 0.7467278 0.7039947 0.7420724</code></pre>
+<p>When I ran the lasso, 56 variables were retained including population, suicides_no, all age groups, and 49 different countries. The AUC from the 10-fold CV is the highest calculated compared to my logistic regression, but is only a little higher and is still only a fair model.</p>
+<p>```</p>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

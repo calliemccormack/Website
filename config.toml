@@ -20,10 +20,10 @@ theme = "hugo-sustain"
   custom_js  = []
 
 [params.social]
-  Github        = "username"
+  Github        = "calliemccormack"
   Email         = "calliemccormack@utexas.edu"
   LinkedIn      = "callie-mccormack-24a7a7170"
-
+  Twitter       = "McCormackCallie"
 
 ## Main Menu
 [[menu.main]]

@@ -1,10 +1,12 @@
 ---
 title: "Project1"
 author: "Callie McCormack"
-date: "2/27/2020"
+showpagemeta: false
 output:
   html_document:
     df_print: paged
+    
+    
 ---
 
 ```{r setup, include=FALSE}

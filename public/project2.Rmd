@@ -55,6 +55,7 @@ library(lmtest)
 library(sandwich)
 library(plotROC)
 library(glmnet)
+library(kableExtra)
 ```
 
 
@@ -85,7 +86,7 @@ for(i in 1:6){print(as.character(covmats$age[i])); print(covmats$covs[i])}
 
 man <- manova(cbind(suicides_no, population)~age, data=Suicide)
 summary(man)
-summary.aov(man)
+summary.aov(man) 
 pairwise.t.test(Suicide$suicides_no, Suicide$age, p.adj="none")
 pairwise.t.test(Suicide$population,Suicide$age, p.adj="none")
 
@@ -231,14 +232,14 @@ variables<-variables[variables %!in% '(Intercept)']
 
 
 variables<-str_remove(variables, "country")
+variables<-str_remove(variables, "age")
 
 variables
 
 
 Suicidewide<-Suicide%>% pivot_wider(names_from = country, values_from = country,
 values_fill = list(country=0),
-values_fn = list(country = ~+(as.logical(length(.))))) %>% 
-select(one_of(variables), age, population, suicides_no,sex)
+values_fn = list(country = ~+(as.logical(length(.))))) %>% pivot_wider(names_from= age, values_from = age, values_fill = list(age=0),values_fn = list(age = ~+(as.logical(length(.))))) %>% select(one_of(variables), population, suicides_no,sex)
 
 k=10
 suicidedat <- Suicidewide[sample(nrow(Suicidewide)),]
@@ -263,7 +264,7 @@ diags %>% summarize_all(mean)
 
 ```
 
-When I ran the lasso, 56 variables were retained including population, suicides_no, all age groups, and 49 different countries. The AUC from the 10-fold CV is the highest calculated compared to my logistic regression, but is only a little higher and is still only a fair model. 
+When I ran the lasso, 56 variables were retained including population, suicides_no, every age group except 15-24, and 49 different countries. The AUC from the 10-fold CV is the highest calculated compared to my logistic regression, but is only a little higher and is still only a fair model. 
 
-```
+
 

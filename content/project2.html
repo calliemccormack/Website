@@ -1,7 +1,7 @@
 ---
 title: "Project 2"
 author: "Callie McCormack"
-showmetadata: false
+showpagemeta: false
 output:
   html_document:
     df_print: paged
@@ -15,7 +15,8 @@ Suicide&lt;- Suicide %&gt;% drop_na()
 Suicide$year &lt;- as.factor(Suicide$year)
 set.seed(1234)
 Suicidedata &lt;- Suicide%&gt;%mutate(y=ifelse(sex==&quot;female&quot;, 1, 0))</code></pre>
-<p>##Introduction</p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
 <p>I found the WHO suicide statistics on the Kaggle website. The dataset was made using the WHO mortality database online tool, and covers the year 1979-2016. 141 countries are covered in the dataset, with 6 groupings of age from 5-75 in ten year intervals. Sex is a factor with two levels of male and females which I used as the binary variable. Suicides_no is a numeric variable that list the number of suicides, while population lists the number of people in the country, with a one to one ratio. Since some countries didn’t measure suicide numbers, I omitted the rows that have NA’s. When the NA’s were omitted, there were 36,060 observations.</p>
 <pre class="r"><code>#Manova
 
@@ -354,3 +355,4 @@ diags %&gt;% summarize_all(mean)</code></pre>
 <pre><code>##         acc      sens      spec       ppv       auc
 ## 1 0.6739034 0.6004334 0.7474098 0.7040612 0.7414618</code></pre>
 <p>When I ran the lasso, 56 variables were retained including population, suicides_no, every age group except 15-24, and 49 different countries. The AUC from the 10-fold CV is the highest calculated compared to my logistic regression, but is only a little higher and is still only a fair model.</p>
+</div>

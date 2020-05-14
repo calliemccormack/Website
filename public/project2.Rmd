@@ -1,7 +1,7 @@
 ---
 title: "Project 2"
 author: "Callie McCormack"
-showmetadata: false
+showpagemeta: false
 output:
   html_document:
     df_print: paged
@@ -71,9 +71,9 @@ Suicidedata <- Suicide%>%mutate(y=ifelse(sex=="female", 1, 0))
 
 ```
 
-##Introduction
+## Introduction
 
-I found the WHO suicide statistics on the Kaggle website. The dataset was made using the WHO mortality database online tool, and covers the year 1979-2016. 141 countries are covered in the dataset, with 6 groupings of age from 5-75 in ten year intervals. Sex is a factor with two levels of male and females which I used as the binary variable. Suicides_no is a numeric variable that list the number of suicides, while population lists the number of people in the country, with a one to one ratio. Since some countries didn't measure suicide numbers, I omitted the rows that have NA's. When the NA's were omitted, there were 36,060 observations. 
+  I found the WHO suicide statistics on the Kaggle website. The dataset was made using the WHO mortality database online tool, and covers the year 1979-2016. 141 countries are covered in the dataset, with 6 groupings of age from 5-75 in ten year intervals. Sex is a factor with two levels of male and females which I used as the binary variable. Suicides_no is a numeric variable that list the number of suicides, while population lists the number of people in the country, with a one to one ratio. Since some countries didn't measure suicide numbers, I omitted the rows that have NA's. When the NA's were omitted, there were 36,060 observations. 
 
 
 
@@ -95,7 +95,7 @@ pairwise.t.test(Suicide$population,Suicide$age, p.adj="none")
 
 ```
 
-There are many assumptions for a MANOVA, but the assumption of multivariate normality is met since there are more than 25 observations per group. The assumption of homogeneity for co-variances is not met since the 5-14 age group co-variance matrix seems to vary from the other age groups.1 MANOVA test was run, 2 ANOVA's were run, and 30 t tests were run (33 tests in total). The probability of a type one error is 81.6%, and the adjusted significance level is .0015. With the new significance level,5-14 year olds differ from every age group in suicide number,15-24 year olds differ from every age group except for 75+ ages, 25-34 year olds suicide numbers differ significantly from every other age group, the 35-54 year olds differ from every age group, 55-75 year olds differ from every age group, and 75+ age group differs from every group except 15-24 year olds. In population numbers, 75+ year olds differ from every age group, and 35-54 year olds differ from every age group. All other age groups do not differ from each other. 
+  There are many assumptions for a MANOVA, but the assumption of multivariate normality is met since there are more than 25 observations per group. The assumption of homogeneity for co-variances is not met since the 5-14 age group co-variance matrix seems to vary from the other age groups.1 MANOVA test was run, 2 ANOVA's were run, and 30 t tests were run (33 tests in total). The probability of a type one error is 81.6%, and the adjusted significance level is .0015. With the new significance level,5-14 year olds differ from every age group in suicide number,15-24 year olds differ from every age group except for 75+ ages, 25-34 year olds suicide numbers differ significantly from every other age group, the 35-54 year olds differ from every age group, 55-75 year olds differ from every age group, and 75+ age group differs from every group except 15-24 year olds. In population numbers, 75+ year olds differ from every age group, and 35-54 year olds differ from every age group. All other age groups do not differ from each other. 
 
 ```{r}
 
@@ -118,7 +118,7 @@ mean(rand_dist> 233.493 | rand_dist< -233.493)
 
 ```
 
-The null hypothesis is that there is no mean difference in suicide numbers between sexes. The results of the randomization test show that we can reject the null hypothesis that there is no difference in suicide numbers between sexes. The calculated mean difference (233) is much higher than the null distribution so the test statistic isn't visible on the histogram of the null distribution. 
+  The null hypothesis is that there is no mean difference in suicide numbers between sexes. The results of the randomization test show that we can reject the null hypothesis that there is no difference in suicide numbers between sexes. The calculated mean difference (233) is much higher than the null distribution so the test statistic isn't visible on the histogram of the null distribution. 
 
 ```{r}
 #Linear Regression Model
@@ -145,7 +145,7 @@ coeftest(fit, vcov = vcovHC(fit))
 
 ```
 
-The predicted suicide number for females of an average population is -119.3. Controlling for sex, for every one unit increase in population, the number of suicides increases by 6.3883-5. Controlling for population, being male increases the number of suicides by 245. The slope for population on suicides number for males is 1.609e-4 greater. The linear regression does not pass the assumption of normality via the KS test and fails the assumption of homoskedacity using the BP test. Using robust standard errors, all coefficients are still significant. The variables tested explain 51.51% of the variation in suicide numbers. The standard error increases for every variable/interaction and decreased for the intercept. The probability increases for everything, but is still significant.
+  The predicted suicide number for females of an average population is -119.3. Controlling for sex, for every one unit increase in population, the number of suicides increases by 6.3883-5. Controlling for population, being male increases the number of suicides by 245. The slope for population on suicides number for males is 1.609e-4 greater. The linear regression does not pass the assumption of normality via the KS test and fails the assumption of homoskedacity using the BP test. Using robust standard errors, all coefficients are still significant. The variables tested explain 51.51% of the variation in suicide numbers. The standard error increases for every variable/interaction and decreased for the intercept. The probability increases for everything, but is still significant.
 
 ```{r}
 #Boostraped Standard Errors
@@ -162,7 +162,7 @@ samp_distn %>% t %>% as.data.frame %>% summarize_all(sd)
 
 ```
 
-With Bootstrapped standard errors,the standard errors are in between the original standard errors and the robust standard errors. The probability is slightly higher than the original regression, but is still significant. 
+  With Bootstrapped standard errors,the standard errors are in between the original standard errors and the robust standard errors. The probability is slightly higher than the original regression, but is still significant. 
 
 ```{r}
 #Logistic Regression
@@ -181,7 +181,7 @@ ggplot(Suicidedata,aes(logit, color=sex, fill=sex))+geom_density(alpha=.3)+
 geom_vline(xintercept=0,lty=2)+xlim(-.1,.1) + geom_rug()
 ```
 
-The odds of being female in a mean population with a mean number of suicides is .8944. Controlling for suicide number, for every one unit increase in population, the odds of the being female increases by a factor of 1. Controlling for population, for every one unit increase in suicide number the odds of being female decreases by a factor of .9978. The AUC is .733 which means it is a fair model, with the specificity being .47 and sensitivity .875. 
+  The odds of being female in a mean population with a mean number of suicides is .8944. Controlling for suicide number, for every one unit increase in population, the odds of the being female increases by a factor of 1. Controlling for population, for every one unit increase in suicide number the odds of being female decreases by a factor of .9978. The AUC is .733 which means it is a fair model, with the specificity being .47 and sensitivity .875. 
 
 ```{R}
 
@@ -209,7 +209,7 @@ summarize_all(diags, mean)
 
 ```
 
-The AUC from the ROC plot is slightly higher than the AUC from the class_diag function, but is still a fair model.The average AUC from the 10-fold CV is slightly lower than the one from the ROC plot and the AUC from the class_diag function.  
+  The AUC from the ROC plot is slightly higher than the AUC from the class_diag function, but is still a fair model.The average AUC from the 10-fold CV is slightly lower than the one from the ROC plot and the AUC from the class_diag function.  
 
 ```{r}
 #Lasso Regression
@@ -264,7 +264,7 @@ diags %>% summarize_all(mean)
 
 ```
 
-When I ran the lasso, 56 variables were retained including population, suicides_no, every age group except 15-24, and 49 different countries. The AUC from the 10-fold CV is the highest calculated compared to my logistic regression, but is only a little higher and is still only a fair model. 
+  When I ran the lasso, 56 variables were retained including population, suicides_no, every age group except 15-24, and 49 different countries. The AUC from the 10-fold CV is the highest calculated compared to my logistic regression, but is only a little higher and is still only a fair model. 
 
 
 

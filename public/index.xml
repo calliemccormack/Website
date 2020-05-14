@@ -6,7 +6,7 @@
     <description>Recent content on Portfolio</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 02 Oct 2016 22:55:05 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 12 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
@@ -17,19 +17,8 @@
       <pubDate>Tue, 12 May 2020 00:00:00 +0000</pubDate>
       
       <guid>/blog/python-post/</guid>
-      <description>import restring1=&amp;quot;We have to extract these numbers 12, 47, 48 The integers numbers are also interesting: 189 2036 314\&amp;#39;,\&amp;#39; is a separator, so please extract these numbers 125,789,1450 and also these 564,90456 We like to offer you 7890$ per month in order to complete this task... we are joking&amp;quot;re.findall(r&amp;quot;\d+&amp;quot;, string1)## [&amp;#39;12&amp;#39;, &amp;#39;47&amp;#39;, &amp;#39;48&amp;#39;, &amp;#39;189&amp;#39;, &amp;#39;2036&amp;#39;, &amp;#39;314&amp;#39;, &amp;#39;125&amp;#39;, &amp;#39;789&amp;#39;, &amp;#39;1450&amp;#39;, &amp;#39;564&amp;#39;, &amp;#39;90456&amp;#39;, &amp;#39;7890&amp;#39;]string2=&amp;quot;Jan 13 00:48:59: DROP service 68-&amp;gt;67(udp) from 213.</description>
-    </item>
-    
-    <item>
-      <title>Projects</title>
-      <link>/projects/</link>
-      <pubDate>Sun, 02 Oct 2016 22:55:05 -0400</pubDate>
-      
-      <guid>/projects/</guid>
-      <description>Projects Here are some projects I have recently completed:
-  Exploratory Data Analysis with Tidyverse Tools
-  Modeling, Testing, and Classification
-  </description>
+      <description>In order to use python in RStudio you have to install the reticulate package and start a code chunk using &#34; {python}.&#34; After ensuring that you have python installed on the computer, it&#39;s simple to start coding python within RStudio. R can be used within the same markdown document by starting another chunk and using &#34;{R}.&#34;
+import restring1=&amp;quot;We have to extract these numbers 12, 47, 48 The integers numbers are also interesting: 189 2036 314\&amp;#39;,\&amp;#39; is a separator, so please extract these numbers 125,789,1450 and also these 564,90456 We like to offer you 7890$ per month in order to complete this task.</description>
     </item>
     
     <item>
@@ -38,8 +27,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/project2/</guid>
-      <description>Suicide &amp;lt;- read.csv(&amp;quot;who_suicide_statistics.csv&amp;quot;)Suicide&amp;lt;- Suicide %&amp;gt;% drop_na()&amp;#39;%!in%&amp;#39; &amp;lt;- function(x,y)!(&amp;#39;%in%&amp;#39;(x,y))Suicide$year &amp;lt;- as.factor(Suicide$year)set.seed(1234)Suicidedata &amp;lt;- Suicide%&amp;gt;%mutate(y=ifelse(sex==&amp;quot;female&amp;quot;, 1, 0))##Introduction
-I found the WHO suicide statistics on the Kaggle website. The dataset was made using the WHO mortality database online tool, and covers the year 1979-2016. 141 countries are covered in the dataset, with 6 groupings of age from 5-75 in ten year intervals. Sex is a factor with two levels of male and females which I used as the binary variable.</description>
+      <description>Suicide &amp;lt;- read.csv(&amp;quot;who_suicide_statistics.csv&amp;quot;)Suicide&amp;lt;- Suicide %&amp;gt;% drop_na()&amp;#39;%!in%&amp;#39; &amp;lt;- function(x,y)!(&amp;#39;%in%&amp;#39;(x,y))Suicide$year &amp;lt;- as.factor(Suicide$year)set.seed(1234)Suicidedata &amp;lt;- Suicide%&amp;gt;%mutate(y=ifelse(sex==&amp;quot;female&amp;quot;, 1, 0))IntroductionI found the WHO suicide statistics on the Kaggle website. The dataset was made using the WHO mortality database online tool, and covers the year 1979-2016. 141 countries are covered in the dataset, with 6 groupings of age from 5-75 in ten year intervals. Sex is a factor with two levels of male and females which I used as the binary variable.</description>
     </item>
     
     <item>
@@ -49,6 +37,18 @@ I found the WHO suicide statistics on the Kaggle website. The dataset was made u
       
       <guid>/project1/</guid>
       <description>#Datasetssetwd(&amp;quot;C:/Users/calla/Downloads&amp;quot;)TeenPregnancy &amp;lt;- read.csv(&amp;quot;TeenPregnancy.csv&amp;quot;)States &amp;lt;- read.csv(&amp;quot;States.csv&amp;quot;)library(tidyverse)library(kableExtra)library(factoextra)IntroductionI joined two data sets, TeenPregnancy from the Stat2Data package and States from the carData package. TeenPregnancy includes teen pregnancy rates per 1000 teenage girls, role in the civil war, and church attendance in the previous week by state. Stat2Data includes the amount of money spent on education (in 1000’s per student), average teacher’s salary, percent of graduating high-school student who took the SAT, average score of seniors SAT score in mathematics and verbal, and population by state.</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description>Projects Here are some projects I have recently completed:
+  Exploratory Data Analysis with Tidyverse Tools
+  Modeling, Testing, and Classification
+  </description>
     </item>
     
   </channel>

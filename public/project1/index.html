@@ -97,9 +97,9 @@ data %&gt;% group_by(CivilWar)%&gt;%summarize_if(is.numeric, c(mean=mean,
 sd=sd,median=median)) %&gt;% pivot_longer(cols=-CivilWar) %&gt;% 
 separate(name, into=c(&quot;variable&quot;, &quot;stat&quot;)) %&gt;% 
 pivot_wider(names_from = &quot;variable&quot;, values_from=&quot;value&quot;)%&gt;% kable %&gt;% 
-kable_styling(bootstrap_options = c(&quot;striped&quot;), full_width = F,
+kable_styling(bootstrap_options = c(&quot;striped&quot;,&quot;hover&quot;), full_width = F,
 font_size = 10)</code></pre>
-<table class="table table-striped" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -483,9 +483,8 @@ median
 </tbody>
 </table>
 <pre class="r"><code>data %&gt;% group_by(CivilWar, region) %&gt;% summarize_if(is.numeric, mean) %&gt;% 
-arrange(region) %&gt;% kable %&gt;% kable_styling(bootstrap_options = &quot;striped&quot;, 
-full_width = F, font_size = 10) </code></pre>
-<table class="table table-striped" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+arrange(region) %&gt;% kable %&gt;% kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;), full_width = F, font_size = 10) </code></pre>
+<table class="table table-striped table-hover" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -985,8 +984,8 @@ WSC
 </tbody>
 </table>
 <pre class="r"><code>data %&gt;% count(CivilWar) %&gt;% mutate(prop=(n/sum(n))) %&gt;% kable %&gt;%
-kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F)</code></pre>
-<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;), full_width = F)</code></pre>
+<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1048,8 +1047,8 @@ U
 </tbody>
 </table>
 <pre class="r"><code>data %&gt;% count(region) %&gt;% mutate(prop=(n/sum(n))) %&gt;% kable %&gt;%
-kable_styling(bootstrap_options = &quot;striped&quot;, full_width=F)</code></pre>
-<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;), full_width=F)</code></pre>
+<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1166,9 +1165,9 @@ WSC
 </tbody>
 </table>
 <pre class="r"><code>data %&gt;% select_if(is.numeric) %&gt;% cor %&gt;% kable %&gt;% 
-kable_styling(bootstrap_options = c(&quot;striped&quot;), full_width = F,
+kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;), full_width = F,
 font_size = 10)</code></pre>
-<table class="table table-striped" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1382,8 +1381,8 @@ SAT
 </tbody>
 </table>
 <pre class="r"><code>data %&gt;% filter(CivilWar!=&quot;O&quot;) %&gt;% select_if(is.numeric) %&gt;% cor %&gt;% 
-kable %&gt;% kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, font_size=10)</code></pre>
-<table class="table table-striped" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+kable %&gt;% kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;), full_width = F, font_size=10)</code></pre>
+<table class="table table-striped table-hover" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">

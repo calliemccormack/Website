@@ -41,15 +41,6 @@ SkillsI am a quick learner and am good with troubleshooting technology issues.<
     </item>
     
     <item>
-      <title>Project2</title>
-      <link>/project2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/project2/</guid>
-      <description>Suicide &amp;lt;- read.csv(&amp;quot;who_suicide_statistics.csv&amp;quot;)Suicide&amp;lt;- Suicide %&amp;gt;% drop_na()&amp;#39;%!in%&amp;#39; &amp;lt;- function(x,y)!(&amp;#39;%in%&amp;#39;(x,y))Suicide$year &amp;lt;- as.factor(Suicide$year)set.seed(1234)Suicidedata &amp;lt;- Suicide%&amp;gt;%mutate(y=ifelse(sex==&amp;quot;female&amp;quot;, 1, 0))IntroductionI found the WHO suicide statistics on the Kaggle website. The dataset was made using the WHO mortality database online tool, and covers the year 1979-2016. 141 countries are covered in the dataset, with 6 groupings of age from 5-75 in ten year intervals. Sex is a factor with two levels of male and females which I used as the binary variable.</description>
-    </item>
-    
-    <item>
       <title>Projects</title>
       <link>/projects/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

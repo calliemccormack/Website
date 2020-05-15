@@ -1,7 +1,6 @@
 ---
 title: "Project2"
 author: "Callie McCormack"
-showpagemeta: false
 output:
   html_document:
     df_print: paged

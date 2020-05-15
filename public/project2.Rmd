@@ -1,5 +1,5 @@
 ---
-title: "Project2"
+title: "Project 2"
 author: "Callie McCormack"
 showpagemeta: false
 output:
@@ -59,6 +59,7 @@ library(kableExtra)
 ```
 
 
+<center> <h1> Project 2 </h1> </center>
 
 ```{r}
 

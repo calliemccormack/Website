@@ -37,16 +37,16 @@ SkillsI am a quick learner and am good with troubleshooting technology issues.<
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/project1/</guid>
-      <description>#Datasetssetwd(&amp;quot;C:/Users/calla/Downloads&amp;quot;)TeenPregnancy &amp;lt;- read.csv(&amp;quot;TeenPregnancy.csv&amp;quot;)States &amp;lt;- read.csv(&amp;quot;States.csv&amp;quot;)library(tidyverse)library(kableExtra)library(factoextra)IntroductionI joined two data sets, TeenPregnancy from the Stat2Data package and States from the carData package. TeenPregnancy includes teen pregnancy rates per 1000 teenage girls, role in the civil war, and church attendance in the previous week by state. Stat2Data includes the amount of money spent on education (in 1000’s per student), average teacher’s salary, percent of graduating high-school student who took the SAT, average score of seniors SAT score in mathematics and verbal, and population by state.</description>
+      <description>Project 1#Datasetssetwd(&amp;quot;C:/Users/calla/Downloads&amp;quot;)TeenPregnancy &amp;lt;- read.csv(&amp;quot;TeenPregnancy.csv&amp;quot;)States &amp;lt;- read.csv(&amp;quot;States.csv&amp;quot;)library(tidyverse)library(kableExtra)library(factoextra)IntroductionI joined two data sets, TeenPregnancy from the Stat2Data package and States from the carData package. TeenPregnancy includes teen pregnancy rates per 1000 teenage girls, role in the civil war, and church attendance in the previous week by state. Stat2Data includes the amount of money spent on education (in 1000’s per student), average teacher’s salary, percent of graduating high-school student who took the SAT, average score of seniors SAT score in mathematics and verbal, and population by state.</description>
     </item>
     
     <item>
-      <title>Project2</title>
+      <title>Project 2</title>
       <link>/project2/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/project2/</guid>
-      <description>Suicide &amp;lt;- read.csv(&amp;quot;who_suicide_statistics.csv&amp;quot;)Suicide&amp;lt;- Suicide %&amp;gt;% drop_na()&amp;#39;%!in%&amp;#39; &amp;lt;- function(x,y)!(&amp;#39;%in%&amp;#39;(x,y))Suicide$year &amp;lt;- as.factor(Suicide$year)set.seed(1234)Suicidedata &amp;lt;- Suicide%&amp;gt;%mutate(y=ifelse(sex==&amp;quot;female&amp;quot;, 1, 0))IntroductionI found the WHO suicide statistics on the Kaggle website. The dataset was made using the WHO mortality database online tool, and covers the year 1979-2016. 141 countries are covered in the dataset, with 6 groupings of age from 5-75 in ten year intervals. Sex is a factor with two levels of male and females which I used as the binary variable.</description>
+      <description>Project 2Suicide &amp;lt;- read.csv(&amp;quot;who_suicide_statistics.csv&amp;quot;)Suicide&amp;lt;- Suicide %&amp;gt;% drop_na()&amp;#39;%!in%&amp;#39; &amp;lt;- function(x,y)!(&amp;#39;%in%&amp;#39;(x,y))Suicide$year &amp;lt;- as.factor(Suicide$year)set.seed(1234)Suicidedata &amp;lt;- Suicide%&amp;gt;%mutate(y=ifelse(sex==&amp;quot;female&amp;quot;, 1, 0))IntroductionI found the WHO suicide statistics on the Kaggle website. The dataset was made using the WHO mortality database online tool, and covers the year 1979-2016. 141 countries are covered in the dataset, with 6 groupings of age from 5-75 in ten year intervals.</description>
     </item>
     
     <item>

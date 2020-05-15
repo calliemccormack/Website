@@ -1,0 +1,16 @@
+---
+title: "About"
+author: "Callie McCormack"
+date: "5/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Biography
+
+I am a Junior at the University of Texas at Austin. I have a 3.97 GPA and have received many honors from UT, including college scholar, CNS second year excellence award, and most recently I was named an Unrestricted Presidential Endowed Scholar. When I finish my undergraduate degree, I hope to go to graduate school for genetic counseling. 
+
+![](/./About_files/Resume.pdf)

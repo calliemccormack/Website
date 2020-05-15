@@ -22,6 +22,16 @@ By importing the package re in python, it’s possible to use regular expression
     </item>
     
     <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>BiographyI am a Junior at the University of Texas at Austin. I have a 3.97 GPA and have received many honors from UT, including college scholar, CNS second year excellence award, and most recently I was named an Unrestricted Presidential Endowed Scholar. When I finish my undergraduate degree, I hope to go to graduate school for genetic counseling.
+</description>
+    </item>
+    
+    <item>
       <title>Project 2</title>
       <link>/project2/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

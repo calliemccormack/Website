@@ -17,8 +17,8 @@
       <pubDate>Tue, 12 May 2020 00:00:00 +0000</pubDate>
       
       <guid>/blog/python-post/</guid>
-      <description>In order to use python in RStudio you have to install the reticulate package and start a code chunk using &#34; {python}.&#34; After ensuring that you have python installed on the computer, it&#39;s simple to start coding python within RStudio. R can be used within the same markdown document by starting another chunk and using &#34;{R}.&#34;
-import restring1=&amp;quot;We have to extract these numbers 12, 47, 48 The integers numbers are also interesting: 189 2036 314\&amp;#39;,\&amp;#39; is a separator, so please extract these numbers 125,789,1450 and also these 564,90456 We like to offer you 7890$ per month in order to complete this task.</description>
+      <description>In order to use python in RStudio you have to install the reticulate package and start a code chunk using “{python}.” After ensuring that you have python installed on the computer, it’s simple to start coding python within RStudio. R can be used within the same markdown document by starting another chunk and using “{R}.”
+By importing the package re in python, it’s possible to use regular expressions to identify patterns using re.</description>
     </item>
     
   </channel>

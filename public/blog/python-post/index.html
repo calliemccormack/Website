@@ -72,7 +72,9 @@
               
 
 
-<p>In order to use python in RStudio you have to install the reticulate package and start a code chunk using " <code>{python}." After ensuring that you have python installed on the computer, it's simple to start coding python within RStudio. R can be used within the same markdown document by starting another chunk and using "</code>{R}."</p>
+<p>In order to use python in RStudio you have to install the reticulate package and start a code chunk using “{python}.” After ensuring that you have python installed on the computer, it’s simple to start coding python within RStudio. R can be used within the same markdown document by starting another chunk and using “{R}.”</p>
+<p><img src="/blog/2020-05-12-python-post_files/reticulated_python.png" /></p>
+<p>By importing the package re in python, it’s possible to use regular expressions to identify patterns using re.findall(). All examples used in this post can be found at <a href="http://play.inginf.units.it" class="uri">http://play.inginf.units.it</a> (regexplay). In this example, I extracted every set of numbers found in the string.</p>
 <pre class="python"><code>
 import re
 
@@ -80,6 +82,7 @@ string1=&quot;We have to extract these numbers 12, 47, 48 The integers numbers a
 
 re.findall(r&quot;\d+&quot;, string1)</code></pre>
 <pre><code>## [&#39;12&#39;, &#39;47&#39;, &#39;48&#39;, &#39;189&#39;, &#39;2036&#39;, &#39;314&#39;, &#39;125&#39;, &#39;789&#39;, &#39;1450&#39;, &#39;564&#39;, &#39;90456&#39;, &#39;7890&#39;]</code></pre>
+<p>The next example is used to find a set of IP addresses in a long string that also includes MAC addresses. By using regular expressions, all IP addresses can be extracted accurately.</p>
 <pre class="python"><code>
 
 string2=&quot;Jan 13 00:48:59: DROP service 68-&gt;67(udp) from 213.92.153.167 to 69.43.107.219, prefix: \&quot;spoof iana-0/8\&quot; \
@@ -93,46 +96,22 @@ Jan 13 17:52:08: ACCEPT service http from 213.121.184.130 to firewall(pub-nic), 
 
 re.findall(r&quot;[0-9]+(?:\.[0-9]+){3}&quot;, string2)</code></pre>
 <pre><code>## [&#39;213.92.153.167&#39;, &#39;69.43.107.219&#39;, &#39;69.43.112.233&#39;, &#39;217.70.100.113&#39;, &#39;74.125.186.208&#39;, &#39;74.125.186.208&#39;, &#39;140.105.63.158&#39;, &#39;172.45.240.237&#39;, &#39;217.70.177.60&#39;, &#39;216.34.90.16&#39;, &#39;69.43.85.253&#39;, &#39;213.121.184.130&#39;, &#39;213.121.184.130&#39;, &#39;140.105.63.164&#39;]</code></pre>
-<pre class="python"><code>string3= &quot;&lt;a href=\&quot;javascript:openurl(&#39;/Xplore/accessinfo.jsp&#39;)\&quot; class=\&quot;topUnderlineLinks\&quot;&gt;\
-                                            &lt;A href=\&quot;/iel5/4235/4079606/04079617.pdf?tp=&amp;arnumber=4079617&amp;isnumber=4079606\&quot; class=\&quot;bodyCopy\&quot;&gt;PDF&lt;/A&gt;(3141 KB)&amp;nbsp;\
-                        &lt;A href=&#39;/xpl/RecentCon.jsp?punumber=10417&#39;&gt;Evolutionary Computation, 2005. The 2005 IEEE Congress on&lt;/A&gt;&lt;br&gt;\
-                &lt;td width=\&quot;33%\&quot; &gt;&lt;div align=\&quot;right\&quot;&gt; &lt;a href=\&quot;/xplorehelp/Help_start.html#Help_searchresults.html\&quot; class=\&quot;subNavLinks\&quot; target=\&quot;blank\&quot;&gt;Help&lt;/a&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;a href=\&quot;/xpl/contactus.jsp\&quot; class=\&quot;subNavLinks\&quot;&gt;Contact\
-                Kimya ile ilgili çeþitli temel referans\
-&lt;a href=\&quot;http://search.epnet.com/login.asp?profile=web&amp;amp;defaultdb=geh\&quot;\
-&lt;a href=\&quot;http://iimpft.chadwyck.com/\&quot; target=\&quot;_parent\&quot;&gt;International\
-&lt;a href=\&quot;standartlar.html#tse\&quot; target=\&quot;_parent\&quot;&gt;NFPA Standartlarý&lt;/a&gt;\
-&lt;a href=\&quot;http://www.gutenberg.org/\&quot; target=\&quot;_parent\&quot;&gt;Project Gutenberg&lt;/a&gt;\
-&lt;a href=\&quot;http://proquestcombo.safaribooksonline.com/?portal=proquestcombo&amp;amp;uicode=istanbultek\&quot;\
-&lt;a href=\&quot;http://www.scitation.org\&quot; target=\&quot;_parent\&quot;&gt;Scitation&lt;/a&gt;\
-dergilerin listesini görmek için &lt;a href=\&quot;/online/aip.html\&quot;&gt;bu yolu&lt;/a&gt;\
-&lt;a href=\&quot;http://www3.interscience.wiley.com/journalfinder.html\&quot;\
-               &lt;td width=\&quot;46%\&quot;&gt;&lt;a href=\&quot;/xpl/periodicals.jsp\&quot; class=\&quot;dropDownNav\&quot; accesskey=\&quot;j\&quot;&gt;Journals &amp;amp; Magazines\
-               &lt;td&gt;&lt;a href=\&quot;http://www.ieee.org/products/onlinepubs/resources/XploreTutorial.pdf\&quot; class=\&quot;dropDownNav\&quot;&gt;IEEE Xplore Demo&lt;/a&gt;&lt;/td&gt;&quot;
-
-
-re.findall(r&#39;href=&quot;.*?&quot;&#39;, string3)</code></pre>
-<pre><code>## [&#39;href=&quot;javascript:openurl(\&#39;/Xplore/accessinfo.jsp\&#39;)&quot;&#39;, &#39;href=&quot;/iel5/4235/4079606/04079617.pdf?tp=&amp;arnumber=4079617&amp;isnumber=4079606&quot;&#39;, &#39;href=&quot;/xplorehelp/Help_start.html#Help_searchresults.html&quot;&#39;, &#39;href=&quot;/xpl/contactus.jsp&quot;&#39;, &#39;href=&quot;http://search.epnet.com/login.asp?profile=web&amp;amp;defaultdb=geh&quot;&#39;, &#39;href=&quot;http://iimpft.chadwyck.com/&quot;&#39;, &#39;href=&quot;standartlar.html#tse&quot;&#39;, &#39;href=&quot;http://www.gutenberg.org/&quot;&#39;, &#39;href=&quot;http://proquestcombo.safaribooksonline.com/?portal=proquestcombo&amp;amp;uicode=istanbultek&quot;&#39;, &#39;href=&quot;http://www.scitation.org&quot;&#39;, &#39;href=&quot;/online/aip.html&quot;&#39;, &#39;href=&quot;http://www3.interscience.wiley.com/journalfinder.html&quot;&#39;, &#39;href=&quot;/xpl/periodicals.jsp&quot;&#39;, &#39;href=&quot;http://www.ieee.org/products/onlinepubs/resources/XploreTutorial.pdf&quot;&#39;]</code></pre>
-<pre class="python"><code>
-string4=&quot;&lt;http://www.classmates.com/go/e/200988231/CC123101BT/CM00&gt;  &lt;http://graphics.classmates.com/graphics/spacer.gif&gt;  &lt;http://graphics.classmates.com/graphics/sp \
-You have received this email because the requester specified you as their Manager. Please click http://itcapps.corp.enron.com/srrs/auth/emailLink.asp?ID=000000000053239&amp;Page=Approval to review and act upon this request.     Request ID          : 000000000053239 Request Create Date\
-ronOnline.   The following User ID and Password will give you access to live prices on the web-site http://www.enrononline.com.  User ID: ADM40601 Password: WELCOME!   (note these are case sensitive)    Please keep your User I\
-&lt;http://www.classmates.com/go/e/200988231/CC122401BC/CM00&gt;  &lt;http://graphics.classmates.com/graphics/spacer.gif&gt;  &lt;http://graphics.classmates.com/graphics/sp\
-http://www.btinternet.com/~pir8/arnie/\
-n, just click on the following hyperlink and complete the order form by Tuesday February 12, 2002.  http://zzz1.net/rd/rd.asp?ZXU=562&amp;ZXD=1471085&amp;UID=1471085  If you cannot link directly to the web site, simply cut and paste the address listed above into yo\
-been successful getting in the group. To access the group should go to your web browser and type in http://www.egroups.com  The screen should show that you are a member of smu-betas group. When you replied to the original \
-mber and password. For more details on how to log-on to eHRonline, see step-by-step instructions at http://isc.enron.com/site/doclibrary/user/ 2. Navigate to the pay advice using the following navigation menus: ? Pay Information ? Paycheck I\
-In addition to World Markets Energy information  &lt;http://esource.enron.com/worldmarket.asp&gt; and Country Analysis and Forecasting, &lt;http://esource.enron.com/worldmarket_CountryAnalysis.asp&gt;  \
-&lt;http://ad.doubleclick.net/clk;3549492;6600300;c?http://www.sportingbetusa.com/english/casino/casinonew-fr.asp?isLogged=notlogged&gt; A WEEKEND PAIR-A-DICE &lt;http://ad.doubleclick.net/clk;3549492;6600300;c?http://www.sportingbetusa.c \
-Mr. Skilling:  Your P number is P00500599.  For your convenience, you can also go to http://isc.enron.com/site/ under&quot;
-
-
-re.findall(r&#39;(http?://[^\s]+)&#39;, string4)</code></pre>
-<pre><code>## [&#39;http://www.classmates.com/go/e/200988231/CC123101BT/CM00&gt;&#39;, &#39;http://graphics.classmates.com/graphics/spacer.gif&gt;&#39;, &#39;http://graphics.classmates.com/graphics/sp&#39;, &#39;http://itcapps.corp.enron.com/srrs/auth/emailLink.asp?ID=000000000053239&amp;Page=Approval&#39;, &#39;http://www.enrononline.com.&#39;, &#39;http://www.classmates.com/go/e/200988231/CC122401BC/CM00&gt;&#39;, &#39;http://graphics.classmates.com/graphics/spacer.gif&gt;&#39;, &#39;http://graphics.classmates.com/graphics/sphttp://www.btinternet.com/~pir8/arnie/n,&#39;, &#39;http://zzz1.net/rd/rd.asp?ZXU=562&amp;ZXD=1471085&amp;UID=1471085&#39;, &#39;http://www.egroups.com&#39;, &#39;http://isc.enron.com/site/doclibrary/user/&#39;, &#39;http://esource.enron.com/worldmarket.asp&gt;&#39;, &#39;http://esource.enron.com/worldmarket_CountryAnalysis.asp&gt;&#39;, &#39;http://ad.doubleclick.net/clk;3549492;6600300;c?http://www.sportingbetusa.com/english/casino/casinonew-fr.asp?isLogged=notlogged&gt;&#39;, &#39;http://ad.doubleclick.net/clk;3549492;6600300;c?http://www.sportingbetusa.c&#39;, &#39;http://isc.enron.com/site/&#39;]</code></pre>
+<p>Another way to use regular expression is extremely useful for biology majors. By using regular expressions, it’s possible to extract specfic nucleotide sequences to see how many times a restriction enzyme will cut into a piece of DNA.</p>
 <pre class="python"><code>
 string5=&quot;ATGGCAATAACCCCCCGTTTCTACTTCTAGAGGAGAAAAGTATTGACATGAGCGCTCCCGGCACAAGGGCCAAAGAAGTCTCCAATTTCTTATTTCCGAATGACATGCGTCTCCTTGCGGGTAAATCACCGACCGCAATTCATAGAAGCCTGGGGGAACAGATAGGTCTAATTAGCTTAAGAGAGTAAATCCTGGGATCATTCAGTAGTAACCATAAACTTACGCTGGGGCTTCTTCGGCGGATTTTTACAGTTACCAACCAGGAGATTTGAAGTAAATCAGTTGAGGATTTAGCCGCGCTATCCGGTAATCTCCAAATTAAAACATACCGTTCCATGAAGGCTAGAATTACTTACCGGCCTTTTCCATGCCTGCGCTATACCCCCCCACTCTCCCGCTTATCCGTCCGAGCGGAGGCAGTGCGATCCTCCGTTAAGATATTCTTACGTGTGACGTAGCTATGTATTTTGCAGAGCTGGCGAACGCGTTGAACACTTCACAGATGGTAGGGATTCGGGTAAAGGGCGTATAATTGGGGACTAACATAGGCGTAGACTACGATGGCGCCAACTCAATCGCAGCTCGAGCGCCCTGAATAACGTACTCATCTCAACTCATTCTCGGCAATCTACCGAGCGACTCGATTATCAACGGCTGTCTAGCAGTTCTAATCTTTTGCCAGCATCGTAATAGCCTCCAAGAGATTGATGATAGCTATCGGCACAGAACTGAGACGGCGCCGATGGATAGCGGACTTTCGGTCAACCACAATTCCCCACGGGACAGGTCCTGCGGTGCGCATCACTCTGAATGTACAAGCAACCCAAGTGGGCCGAGCCTGGACTCAGCTGGTTCCTGCGTGAGCTCGAGACTCGGGATGACAGCTCTTTAAACATAGAGCGGGGGCGTCGAACGGTCGAGAAAGTCATAGTACCTCGGGTACCAACTTACTCAGGTTATTGCTTGAAGCTGTACTATTTTAGGGGGGGAGCGCTGAAGGTCTCTTCTTCTCATGACTGAACTCGCGAGGGTCGTGAAGTCGGTTCCTTCAATGGTTAAAAAACAAAGGCTTACTGTGCGCAGAGGAACGCCCATCTAGCGGCTGGCGTCTTGAATGCTCGGTCCCCTTTGTCATTCCGGATTAATCCATTTCCCTCATTCACGAGCTTGCGAAGTCTACATTGGTATATGAATGCGACCTAGAAGAGGGCGCTTAAAATTGGCAGTGGTTGATGCTCTAAACTCCATTTGGTTTACTCGTGCATCACCGCGATAGGCTGACAAAGGTTTAACATTGAATAGCAAGGCACTTCCGGTCTCAATGAACGGCCGGGAAAGGTACGCGCGCGGTATGGGAGGATCAAGGGGCCAATAGAGAGGCTCCTCTCTCACTCGCTAGGAGGCAAATGTAAAACAATGGTTACTGCATCGATACATAAAACATGTCCATCGGTTGCCCAAAGTGTTAAGTGTCTATCACCCCTAGGGCCGTTTCCCGCATATAAACGCCAGGTTGTATCCGCATTTGATGCTACCGTGGATGAGTCTGCGTCGAGCGCGCCGCACGAATGTTGCAATGTATTGCATGAGTAGGGTTGACTAAGAGCCGTTAGATGCGTCGCTGTACTAATAGTTGTCGACAGACCGTCGAGATTAGAAAATGGTACCAGCATTTTCGGAGGTTCTCTAACTAGTATGGATTGCGGTGTCTTCACTGTGCTGCGGCTACCCATCGCCTGAAATCCAGCTGGTGTCAAGCCATCCCCTCTCCGGGACGCCGCATGTAGTGAAACATATACGTTGCACGGGTTCACCGCGGTCCGTTCTGAGTCGACCAAGGACACAATCGAGCTCCGATCCGTACCCTCGACAAACTTGTACCCGACCCCCGGAGCTTGCCAGCTCCTCGGGTATCATGGAGCCTGTGGTTCATCGCGTCCGATATCAAACTTCGTCATGATAAAGTCCCCCCCTCGGGAGTACCAGAGAAGATGACTACTGAGTTGTGCGAT&quot;
 
 re.findall(r&quot;A[ATGC]TAAT|GC[AG][AT]TG&quot;, string5) </code></pre>
 <pre><code>## [&#39;GCGTTG&#39;, &#39;ATTAAT&#39;, &#39;GCAATG&#39;, &#39;ACTAAT&#39;]</code></pre>
+<p>While python is great for machine learning, but doesn’t have the tidyverse making R better for data wrangling, data visualization, and statistical tests. Using the reticulate package, it’s possible to run python code in one chunk and use the output in an R chunk.</p>
+<pre class="python"><code>import numpy as np
+
+x= np.random.normal(0,1,50)
+y= np.random.normal(0,1,50)
+</code></pre>
+<pre class="r"><code>library(tidyverse)
+
+ggplot(data.frame(py$x, py$y), aes(py$x,py$y)) + geom_point(aes(py$x, py$y)) + geom_smooth(method=&quot;lm&quot;, se=F)</code></pre>
+<p><img src="/blog/2020-05-12-python-post_files/figure-html/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;" /></p>
 
               <hr>
               <div class="related-posts">

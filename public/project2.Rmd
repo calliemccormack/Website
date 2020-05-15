@@ -1,5 +1,5 @@
 ---
-title: "Project 2"
+title: "Project2"
 author: "Callie McCormack"
 showpagemeta: false
 output:

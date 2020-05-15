@@ -10,9 +10,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Biography
+# Biography
 
 I am a Junior at the University of Texas at Austin. I have a 3.97 GPA and have received many honors from UT, including college scholar, CNS second year excellence award, and most recently I was named an Unrestricted Presidential Endowed Scholar. When I finish my undergraduate degree, I hope to go to graduate school for genetic counseling. 
 
-![](/./About_files/Resume.pdf){width=100% height=400}
+## Skills
+
+I am a quick learner and am good with troubleshooting technology issues. I have leadership and teamwork experience, and I work well with other. I am familiar with R coding and have some research experience.
+
+## Resume
+
+My full professional resume can be found below. 
+
+![](/./About_files/Resume.pdf){width=100% height=1000}
 
